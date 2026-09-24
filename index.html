@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0F0C16">
+<meta name="description" content="Intelligent Community Token ($ICT) — an independent community meme token, live on clank.trade on Robinhood Chain. Buy $ICT, bridge ETH via Relay, join the community.">
+<title>$ICT — Intelligent Community Token · Live on Robinhood Chain</title>
+<!-- MASCOT ASSETS — save next to this file:
+     mascot-full.png → the full-body standing pose
+     mascot-face.png → the bust crop (also used as the favicon)
+     Older natasha-full.png / natasha-face.png still work as fallbacks. -->
+<link rel="icon" type="image/png" href="mascot-face.png">
+<link rel="apple-touch-icon" href="mascot-face.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@500;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --bg:#0F0C16;          /* page — deep purple-black */
+    --bg-2:#161022;        /* raised section */
+    --bg-3:#1D1530;        /* panels / cards */
+    --bg-hover:#221838;    /* row hover */
+    --bg-deep:#0B0812;     /* footer */
+    --ink:#F1EDFB;         /* lavender-white text */
+    --ink-dim:rgba(241,237,251,.72);
+    --purple:#8F7BFF;      /* clank violet */
+    --purple-soft:rgba(143,123,255,.45);
+    --lime:#CCFF00;        /* neon lime */
+    --line:rgba(143,123,255,.18);
+    --line-d:rgba(241,237,251,.14);
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --serif:'Instrument Serif',serif;
+    --sans:'Space Grotesk',sans-serif;
+    --cyber:'Orbitron',sans-serif;      /* cyberpunk display — main headings */
+    --tech:'Chakra Petch',sans-serif;   /* cyberpunk tech — subheaders */
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:var(--sans);font-size:16px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  /* subtle grain */
+  body::after{
+    content:"";position:fixed;inset:0;z-index:70;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  ::selection{background:var(--lime);color:var(--bg)}
+  a{color:inherit}
+  :focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+  .wrap{width:min(1200px,92vw);margin:0 auto}
+  section{scroll-margin-top:86px}
+  svg.ic{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+  svg.bi{fill:currentColor;flex:none;transition:transform .25s}
+
+  /* ============ REVEAL ============ */
+  .rv{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.2,1) var(--d,0s),transform .8s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+  .rv.in{opacity:1;transform:none}
+
+  /* ============ HEADER ============ */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:50;height:66px;
+    background:rgba(15,12,22,.8);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    display:flex;align-items:center;
+  }
+  .hd{display:flex;align-items:center;justify-content:space-between;gap:1.5rem}
+  .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+  .brand-mark{
+    height:32px;min-width:64px;padding:0 12px;background:var(--lime);
+    display:grid;place-items:center;flex:none;
+    font:800 14px/1 var(--mono);letter-spacing:.06em;color:var(--bg);
+    transition:transform .5s cubic-bezier(.3,1.4,.4,1);
+    box-shadow:0 0 14px rgba(204,255,0,.25);
+  }
+  .brand:hover .brand-mark{transform:scale(1.07)}
+  .brand-name{font:600 10px/1.35 var(--mono);letter-spacing:.18em}
+  .nav{display:flex;gap:28px}
+  .nav a{
+    font:600 11px var(--mono);letter-spacing:.16em;text-decoration:none;position:relative;padding:4px 0;
+    color:var(--ink-dim);transition:color .25s;
+  }
+  .nav a::after{content:"";position:absolute;left:0;bottom:0;height:1.5px;width:100%;background:var(--lime);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+  .nav a:hover{color:var(--ink)}
+  .nav a:hover::after,.nav a.active::after{transform:scaleX(1)}
+  .nav a.active{color:var(--lime)}
+  .hd-right{display:flex;align-items:center;gap:6px}
+  .hd-right .btn{margin-left:8px}
+
+  .menu-btn{display:none;background:none;border:1.5px solid var(--purple-soft);width:40px;height:40px;place-items:center;cursor:pointer;color:var(--ink)}
+  .m-nav{
+    position:fixed;top:66px;left:0;right:0;z-index:49;background:var(--bg);border-bottom:1px solid var(--line);
+    display:flex;flex-direction:column;padding:10px 4vw 22px;gap:2px;
+    opacity:0;transform:translateY(-10px);pointer-events:none;transition:.3s;
+  }
+  .m-nav.open{opacity:1;transform:none;pointer-events:auto}
+  .m-nav a{text-decoration:none;font:600 13px var(--mono);letter-spacing:.16em;padding:14px 0;border-bottom:1px solid var(--line);color:var(--ink-dim)}
+  .m-nav a:hover{color:var(--lime)}
+
+  /* ============ BUTTONS ============ */
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer;
+    font:600 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;
+    padding:15px 22px;border:1.5px solid var(--purple-soft);color:var(--ink);background:transparent;
+    transition:background .25s,color .25s,border-color .25s;
+  }
+  .btn .ic,.btn .bi{transition:transform .25s}
+  .btn:hover .ic,.btn:hover .bi{transform:translate(2px,-2px)}
+  .btn-lime{background:var(--lime);border-color:var(--lime);color:var(--bg)}
+  .btn-lime:hover{background:#fff;border-color:#fff;color:var(--bg)}
+  .btn-purple{background:var(--purple);border-color:var(--purple);color:var(--bg)}
+  .btn-purple:hover{background:transparent;color:var(--purple)}
+  .btn-ghost:hover{border-color:var(--lime);color:var(--lime)}
+  .btn.sm{padding:11px 16px;font-size:11px}
+
+  /* ============ HERO ============ */
+  .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;padding-top:150px;overflow:hidden;border-bottom:1px solid var(--line)}
+  #field{position:absolute;inset:0;z-index:0}
+  .hero .wrap{position:relative;z-index:1;display:flex;flex-direction:column;flex:1}
+  .overline{
+    font:600 11px var(--mono);letter-spacing:.22em;display:flex;align-items:center;gap:10px;color:var(--ink-dim);
+  }
+  .overline::before{content:"";width:9px;height:9px;background:var(--lime);flex:none}
+  .live-dot{width:8px;height:8px;border-radius:50%;background:var(--lime);animation:blink 1.6s infinite}
+  @keyframes blink{50%{opacity:.25}}
+  h1{
+    font:900 clamp(1.6rem,5.6vw,4.5rem)/1.1 var(--cyber);letter-spacing:.02em;text-transform:uppercase;
+    margin:26px 0 30px;
+  }
+  h1 em{font-style:normal;color:var(--lime);text-shadow:0 0 22px rgba(204,255,0,.35)}
+  h1 span{display:block}
+  .h1-tick{
+    display:inline-block!important;font:600 clamp(.85rem,1.4vw,1.05rem) var(--mono)!important;letter-spacing:.1em;
+    border:1.5px solid var(--lime);padding:.55em .8em;margin-left:.4em;position:relative;top:-.5em;color:var(--lime)!important;
+    background:var(--bg);
+  }
+  .hero-row{display:flex;justify-content:space-between;align-items:flex-end;gap:2.5rem;flex-wrap:wrap;margin-bottom:44px}
+  .hero-sub{max-width:46ch;font-size:clamp(1rem,1.35vw,1.15rem);color:var(--ink-dim)}
+  .hero-sub a{color:var(--lime);font-weight:600;text-decoration:none;border-bottom:1px solid rgba(204,255,0,.4)}
+  .hero-side{display:flex;flex-direction:column;align-items:flex-end;gap:16px}
+  .hero-cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+
+  .ca-bar{
+    display:flex;align-items:center;gap:12px;border:1.5px solid var(--purple-soft);background:var(--bg-3);
+    padding:10px 14px;max-width:100%;
+  }
+  .ca-chip{font:700 10px var(--mono);letter-spacing:.15em;background:var(--lime);color:var(--bg);padding:4px 8px}
+  .ca-addr{font:500 13px var(--mono);white-space:nowrap}
+
+  .spec-strip{
+    margin-top:auto;display:grid;grid-template-columns:repeat(5,1fr);gap:1px;
+    background:var(--line);border:1px solid var(--line);
+  }
+  .spec{background:rgba(22,16,34,.94);padding:15px 18px}
+  .spec .k{display:block;font:500 9.5px var(--mono);letter-spacing:.2em;color:rgba(241,237,251,.45);margin-bottom:5px}
+  .spec .v{font:600 13px var(--mono);letter-spacing:.02em}
+  .spec a.v{text-decoration:none;color:var(--lime);border-bottom:1px solid rgba(204,255,0,.4)}
+  .hero-foot{display:flex;justify-content:flex-end;align-items:center;padding:14px 0 18px;font:500 10px var(--mono);letter-spacing:.2em;color:rgba(241,237,251,.45)}
+  .scroll-cue{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink-dim)}
+  .scroll-cue:hover{color:var(--lime)}
+  .scroll-cue .ic{animation:bob 1.8s ease-in-out infinite}
+  @keyframes bob{50%{transform:translateY(4px)}}
+
+  /* ============ MASCOT · light trading-card frame ============ */
+  .nat-frame{
+    position:relative;border:1.5px solid var(--purple-soft);border-radius:18px;overflow:hidden;
+    background:#ECE9F6;
+    box-shadow:0 0 34px rgba(143,123,255,.32),0 18px 40px rgba(0,0,0,.55);
+  }
+  .nat-frame::after{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
+    background:linear-gradient(160deg,rgba(204,255,0,.14),transparent 42%,rgba(143,123,255,.20));
+  }
+  .nat-frame img{display:block;width:100%;height:auto;position:relative;z-index:0}
+  .nat-tag{
+    position:absolute;z-index:2;background:var(--lime);color:var(--bg);
+    font:700 9px var(--mono);letter-spacing:.18em;padding:4px 9px;text-transform:uppercase;
+  }
+
+  /* ---- hero poster-card ---- */
+  .nat-hero{
+    position:absolute;right:clamp(4px,3vw,56px);bottom:110px;width:clamp(210px,22vw,300px);
+    z-index:0;pointer-events:none;
+    animation:natIn 1.1s cubic-bezier(.2,.7,.2,1) .9s both;
+  }
+  .nat-hero .nat-frame{transform:rotate(-2deg);animation:natFloat 6s ease-in-out infinite}
+  .nat-hero .nat-frame img{max-height:60vh;object-fit:cover;object-position:top center}
+  .nat-hero .nat-tag{left:12px;bottom:12px}
+  @keyframes natFloat{0%,100%{transform:rotate(-2deg) translateY(0)}50%{transform:rotate(-2deg) translateY(-8px)}}
+  @keyframes natIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+
+  /* ---- community card ---- */
+  .nat-card{
+    display:flex;align-items:center;gap:16px;border:1px solid var(--line);background:var(--bg-3);
+    padding:14px;margin-bottom:26px;max-width:440px;
+  }
+  .nat-card .ph{
+    width:76px;height:76px;border-radius:12px;overflow:hidden;flex:none;
+    background:#ECE9F6;border:1px solid var(--purple-soft);box-shadow:0 0 16px rgba(204,255,0,.18);
+  }
+  .nat-card .ph img{width:100%;height:100%;object-fit:cover;object-position:50% 15%;display:block}
+  .nat-card .who{font:600 10px/1.9 var(--mono);letter-spacing:.16em;text-transform:uppercase}
+  .nat-card .who b{display:block;color:var(--lime);font-size:12px}
+  .nat-card .who span{color:rgba(241,237,251,.5)}
+
+  /* ---- partners peek ---- */
+  .nat-soon{flex:none;width:clamp(190px,20vw,260px);animation:natIn 1.1s cubic-bezier(.2,.7,.2,1) .3s both}
+  .nat-soon .nat-frame{transform:rotate(2.5deg)}
+  .nat-soon .nat-tag{right:12px;bottom:12px}
+
+  /* ---- footer portrait ---- */
+  .foot-mascot{display:flex;align-items:center;gap:12px;margin-top:22px}
+  .foot-mascot .orb{
+    width:54px;height:54px;border-radius:12px;overflow:hidden;flex:none;
+    background:#ECE9F6;border:1px solid var(--purple-soft);box-shadow:0 0 14px rgba(204,255,0,.15);
+  }
+  .foot-mascot .orb img{width:100%;height:100%;object-fit:cover;object-position:50% 15%;display:block}
+  .foot-mascot .who{font:600 9.5px/1.8 var(--mono);letter-spacing:.16em;text-transform:uppercase}
+  .foot-mascot .who b{display:block;color:var(--lime)}
+  .foot-mascot .who span{color:rgba(241,237,251,.5)}
+
+  /* ============ MARQUEE ============ */
+  .marquee{background:#241B3E;color:#C9BDF5;overflow:hidden;border-bottom:1px solid var(--line)}
+  .marquee.lime{background:var(--lime);color:var(--bg);border-color:var(--lime)}
+  .mq-track{display:flex;width:max-content;animation:mq 32s linear infinite}
+  .marquee.lime .mq-track{animation-direction:reverse}
+  .mq-half{white-space:nowrap;padding:13px 0;font:500 11px var(--mono);letter-spacing:.3em}
+  @keyframes mq{to{transform:translateX(-50%)}}
+
+  /* ============ SECTIONS ============ */
+  .section{padding:110px 0;border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;gap:26px;align-items:flex-start;margin-bottom:54px}
+  .sec-no{
+    font:800 clamp(2rem,4.4vw,3.6rem)/1 var(--cyber);color:transparent;
+    -webkit-text-stroke:1.2px var(--purple);flex:none;
+  }
+  .sec-head h2{
+    font:800 clamp(1.4rem,3vw,2.4rem)/1.2 var(--cyber);letter-spacing:.02em;text-transform:uppercase;
+    text-shadow:0 0 18px rgba(143,123,255,.18);
+  }
+  .sec-head h2 em{font-style:normal;color:var(--lime);text-shadow:0 0 18px rgba(204,255,0,.35)}
+  .sec-head .overline{margin-bottom:12px}
+
+  /* ---- thesis ledger ---- */
+  .lead{font:400 clamp(1.35rem,2.4vw,1.9rem)/1.4 var(--serif);max-width:34em;margin-bottom:56px;color:var(--ink)}
+  .lead em{color:var(--lime)}
+  .ledger{border-top:1px solid var(--line)}
+  .led-row{
+    display:grid;grid-template-columns:76px 210px 1fr;gap:24px;align-items:baseline;
+    padding:26px 10px;border-bottom:1px solid var(--line);transition:background .25s;
+  }
+  .led-row:hover{background:var(--bg-hover)}
+  .led-no{font:600 13px var(--mono);color:var(--lime);letter-spacing:.1em}
+  .led-t{font:600 15px var(--tech);letter-spacing:.06em;text-transform:uppercase}
+  .led-d{font-size:15px;max-width:62ch;color:var(--ink-dim)}
+
+  /* ---- numbered step sections ---- */
+  .two-col{display:grid;grid-template-columns:1.05fr 1fr;gap:70px;align-items:start}
+  .relay-copy p{max-width:52ch;margin-bottom:22px;color:var(--ink-dim)}
+  .relay-copy p strong{color:var(--ink)}
+  .route-facts{font:500 11px var(--mono);letter-spacing:.16em;color:var(--lime);margin-bottom:30px}
+  .relay-steps{list-style:none;border-top:1px solid var(--line);margin-bottom:34px}
+  .relay-steps li{display:flex;gap:20px;padding:17px 6px;border-bottom:1px solid var(--line);font-size:15px;color:var(--ink-dim)}
+  .relay-steps li strong{color:var(--ink)}
+  .relay-steps span{font:600 12px var(--mono);color:var(--lime);letter-spacing:.1em;padding-top:3px}
+  .relay-steps a{color:var(--lime);font-weight:600;text-decoration:none}
+  .tip{border-left:3px solid var(--lime);padding:12px 18px;font:400 12.5px/1.7 var(--mono);color:rgba(241,237,251,.6);max-width:52ch;margin-bottom:32px}
+
+  /* ---- buy / step cards ---- */
+  .buy-steps{list-style:none;border-top:1px solid var(--line-d);margin:34px 0 38px}
+  .buy-steps li{display:flex;gap:22px;padding:20px 6px;border-bottom:1px solid var(--line-d)}
+  .bs-no{font:800 1.3rem/1.5 var(--cyber);color:var(--purple);flex:none;width:52px}
+  .buy-steps h4{font:700 13.5px var(--tech);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;color:var(--ink)}
+  .buy-steps p{font-size:14.5px;color:var(--ink-dim);max-width:46ch}
+  .buy-steps a{color:var(--lime)}
+  .trade-cta{display:flex;gap:14px;flex-wrap:wrap}
+  .side-panel{border:1px solid var(--line);background:var(--bg-3);padding:26px;position:sticky;top:96px}
+  .side-panel h4{font:700 12.5px var(--tech);letter-spacing:.1em;text-transform:uppercase;color:var(--ink);margin-bottom:18px}
+  .side-panel .ca-bar{margin-bottom:22px}
+  .side-panel .btn{width:100%;justify-content:center}
+  .side-panel .btn + .btn{margin-top:12px}
+  .side-panel .tip{margin:22px 0 0;max-width:none}
+
+  /* ---- community ---- */
+  .comm-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:70px;align-items:end}
+  .comm-grid h2{
+    font:800 clamp(1.5rem,3.4vw,2.7rem)/1.2 var(--cyber);letter-spacing:.02em;text-transform:uppercase;
+    text-shadow:0 0 18px rgba(143,123,255,.18);
+  }
+  .comm-grid h2 em{font-style:normal;color:var(--lime);text-shadow:0 0 18px rgba(204,255,0,.35)}
+  .comm-right p{color:var(--ink-dim);margin-bottom:28px;max-width:44ch}
+  .comm-cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+  .socials-note{font:500 11px var(--mono);letter-spacing:.16em;color:var(--purple);margin-bottom:14px}
+
+  /* ---- partners / coming soon ---- */
+  .soon-flex{display:flex;align-items:center;gap:clamp(30px,5vw,70px);justify-content:center;flex-wrap:wrap}
+  .soon-text{text-align:center;max-width:640px}
+  .soon-big{
+    font:900 clamp(2rem,7vw,4.8rem)/1.12 var(--cyber);letter-spacing:.03em;text-transform:uppercase;
+    color:var(--lime);text-shadow:0 0 26px rgba(204,255,0,.35),3px 3px 0 rgba(0,0,0,.85);
+    margin-bottom:10px;
+  }
+  .soon-big.alt{
+    color:transparent;-webkit-text-stroke:1.5px var(--purple);
+    text-shadow:none;font-size:clamp(1.3rem,4.4vw,3rem);
+  }
+  .soon-sub{font:500 12px var(--mono);letter-spacing:.24em;color:rgba(241,237,251,.55);margin-top:26px}
+  .soon-sub a{color:var(--lime);text-decoration:none;border-bottom:1px solid rgba(204,255,0,.4)}
+
+  /* ---- footer ---- */
+  footer{background:var(--bg-deep);color:var(--ink);padding:80px 0 34px;border-top:1px solid var(--line)}
+  .foot-word{
+    font:900 clamp(3.4rem,12vw,9.5rem)/1.05 var(--cyber);letter-spacing:.03em;color:transparent;
+    -webkit-text-stroke:1px rgba(143,123,255,.4);user-select:none;margin-bottom:56px;
+  }
+  .foot-grid{display:grid;grid-template-columns:1.3fr .85fr .85fr 1fr;gap:44px;padding-bottom:50px;border-bottom:1px solid var(--line-d)}
+  .foot-grid h5{font:600 10px var(--mono);letter-spacing:.24em;color:rgba(241,237,251,.45);margin-bottom:16px}
+  .foot-grid p{font-size:13.5px;color:var(--ink-dim);max-width:40ch}
+  .foot-grid ul{list-style:none}
+  .foot-grid li{margin-bottom:10px}
+  .foot-grid a{font:500 12.5px var(--mono);letter-spacing:.1em;text-decoration:none;color:var(--ink-dim);transition:.2s}
+  .foot-grid a:hover{color:var(--lime)}
+  .foot-meta span{display:block;font:500 12.5px var(--mono);letter-spacing:.08em;color:var(--ink-dim);margin-bottom:10px}
+  .foot-meta b{color:var(--lime);font-weight:600}
+
+  /* ---- legal disclaimer ---- */
+  .disclaimer{
+    margin-top:34px;border:1px solid var(--line);background:rgba(22,16,34,.6);
+    padding:20px 22px;font:400 11.5px/1.9 var(--mono);letter-spacing:.02em;
+    color:rgba(241,237,251,.55);
+  }
+  .disclaimer b{color:var(--lime);font-weight:600}
+  .disclaimer p + p{margin-top:12px}
+
+  .foot-bottom{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-top:26px;font:500 10px var(--mono);letter-spacing:.18em;color:rgba(241,237,251,.45)}
+  .foot-bottom a{text-decoration:none;color:var(--ink-dim)}
+  .foot-bottom a:hover{color:var(--lime)}
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width:1150px){
+    .nat-hero{display:none}
+  }
+  @media (max-width:1100px){
+    .foot-grid{grid-template-columns:1fr 1fr;gap:40px}
+  }
+  @media (max-width:960px){
+    .nav{display:none}
+    .menu-btn{display:grid}
+    .hd .btn{display:none}
+    .two-col,.comm-grid{grid-template-columns:1fr;gap:50px}
+    .led-row{grid-template-columns:56px 1fr;gap:8px 18px}
+    .led-d{grid-column:2}
+    .foot-grid{grid-template-columns:1fr;gap:36px}
+    .side-panel{position:static}
+  }
+  @media (max-width:900px){
+    .nat-soon{display:none}
+  }
+  @media (max-width:640px){
+    .hero{padding-top:120px}
+    .spec-strip{grid-template-columns:1fr 1fr}
+    .spec:last-child{grid-column:1/-1}
+    .hero-side{align-items:flex-start}
+    .hero-cta{justify-content:flex-start}
+    .section{padding:80px 0}
+    .sec-head{flex-direction:column;gap:10px;margin-bottom:40px}
+    .ca-addr{font-size:11px}
+    .hd-soc{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .mq-track,.scroll-cue .ic,.live-dot,.nat-hero .nat-frame{animation:none!important}
+    .nat-hero,.nat-soon{animation:none;opacity:1}
+    .rv{transition:none;opacity:1;transform:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body id="top">
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="wrap hd">
+    <a class="brand" href="#top" aria-label="ICT home">
+      <span class="brand-mark">$ICT</span>
+      <span class="brand-name">INTELLIGENT<br>COMMUNITY TOKEN</span>
+    </a>
+    <nav class="nav">
+      <a href="#thesis">THESIS</a>
+      <a href="#buy">BUY</a>
+      <a href="#bridge">BRIDGE</a>
+      <a href="#community">COMMUNITY</a>
+      <a href="#partners">SOON</a>
+    </nav>
+    <div class="hd-right">
+      <a class="icon-btn hd-soc" href="https://x.com/ICT_Clank" target="_blank" rel="noopener noreferrer" aria-label="$ICT on X">
+        <svg class="bi" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a class="btn btn-lime sm" href="https://clank.trade/coin/0x89669c21f0c979939fe7aad0b31d9a269d6264d0" target="_blank" rel="noopener noreferrer">BUY $ICT
+        <svg class="ic" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+      </a>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">
+        <svg class="ic ic-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg class="ic ic-x" viewBox="0 0 24 24" style="display:none"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="m-nav" id="mNav">
+  <a href="#thesis">THESIS</a>
+  <a href="#buy">BUY</a>
+  <a href="#bridge">BRIDGE</a>
+  <a href="#community">COMMUNITY</a>
+  <a href="#partners">PARTNERS — SOON</a>
+  <a href="https://x.com/ICT_Clank" target="_blank" rel="noopener noreferrer">X — @ICT_Clank ↗</a>
+  <a href="https://clank.trade/coin/0x89669c21f0c979939fe7aad0b31d9a269d6264d0" target="_blank" rel="noopener noreferrer" style="color:var(--lime)">BUY $ICT ↗</a>
+</div>
+
+<main>
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <canvas id="field" aria-hidden="true"></canvas>
+
+  <!-- MASCOT · hero poster-card -->
+  <div class="nat-hero" aria-hidden="true">
+    <div class="nat-frame">
+      <img src="mascot-full.png" alt=""
+           onerror="this.onerror=function(){var p=this.closest('.nat-hero');if(p)p.style.display='none';};this.src='natasha-full.png';">
+      <span class="nat-tag js-mname">Natasha</span>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <p class="overline rv"><span class="live-dot"></span>LIVE ON CLANK.TRADE — ROBINHOOD CHAIN</p>
+    <h1 class="rv" style="--d:.08s">
+      <span>Intelligent</span>
+      <span><em>Community</em></span>
+      <span>Token<span class="h1-tick">$ICT</span></span>
+    </h1>
+    <div class="hero-row rv" style="--d:.16s">
+      <p class="hero-sub">
+        Born on <a href="https://clank.trade" target="_blank" rel="noopener noreferrer">clank.trade</a>,
+        settled on Robinhood Chain, one Relay hop from anywhere in crypto.
+        Just the internet's smartest community — onchain.
+      </p>
+      <div class="hero-side">
+        <div class="hero-cta">
+          <a class="btn btn-lime" href="https://clank.trade/coin/0x89669c21f0c979939fe7aad0b31d9a269d6264d0" target="_blank" rel="noopener noreferrer">BUY $ICT
+            <svg class="ic" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="https://relay.link/" target="_blank" rel="noopener noreferrer">BRIDGE YOUR ETH HERE
+            <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+        <div class="ca-bar">
+          <span class="ca-chip">CA</span>
+          <span class="ca-addr js-ca">0x0000…0000</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec-strip rv" style="--d:.24s">
+      <div class="spec"><span class="k">TICKER</span><span class="v">$ICT</span></div>
+      <div class="spec"><span class="k">CHAIN</span><span class="v">Robinhood Chain</span></div>
+      <div class="spec"><span class="k">TRADE</span><a class="v" href="https://clank.trade/coin/0x89669c21f0c979939fe7aad0b31d9a269d6264d0" target="_blank" rel="noopener noreferrer">clank.trade ↗</a></div>
+      <div class="spec"><span class="k">BRIDGE</span><a class="v" href="https://relay.link" target="_blank" rel="noopener noreferrer">relay.link ↗</a></div>
+      <div class="spec"><span class="k">GAS</span><span class="v">ETH</span></div>
+    </div>
+    <div class="hero-foot">
+      <a class="scroll-cue" href="#thesis">SCROLL
+        <svg class="ic" viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee" aria-hidden="true">
+  <div class="mq-track">
+    <span class="mq-half">$ICT&nbsp;&nbsp;///&nbsp;&nbsp;INTELLIGENT COMMUNITY TOKEN&nbsp;&nbsp;///&nbsp;&nbsp;LIVE ON CLANK.TRADE&nbsp;&nbsp;///&nbsp;&nbsp;BUY $ICT&nbsp;&nbsp;///&nbsp;&nbsp;BRIDGE YOUR ETH HERE&nbsp;&nbsp;///&nbsp;&nbsp;</span>
+    <span class="mq-half">$ICT&nbsp;&nbsp;///&nbsp;&nbsp;INTELLIGENT COMMUNITY TOKEN&nbsp;&nbsp;///&nbsp;&nbsp;LIVE ON CLANK.TRADE&nbsp;&nbsp;///&nbsp;&nbsp;BUY $ICT&nbsp;&nbsp;///&nbsp;&nbsp;BRIDGE YOUR ETH HERE&nbsp;&nbsp;///&nbsp;&nbsp;</span>
+  </div>
+</div>
+
+<!-- ============ 01 THESIS ============ -->
+<section class="section" id="thesis">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="sec-no">01</span>
+      <div>
+        <p class="overline">THE THESIS</p>
+        <h2>Proof of <em>community</em>.</h2>
+      </div>
+    </div>
+    <p class="lead rv">
+      Most tokens promise you a lambo. <em>$ICT</em> promises you something rarer:
+      a community that actually shows up. The intelligence isn't artificial —
+      <em>it's ours.</em>
+    </p>
+    <div class="ledger">
+      <div class="led-row rv"><span class="led-no">/ 01</span><span class="led-t">Launch</span>
+        <p class="led-d">Fair-launched on clank.trade. No presale, no team bags, no VC exit liquidity — everyone saw the curve at the same time.</p></div>
+      <div class="led-row rv" style="--d:.06s"><span class="led-no">/ 02</span><span class="led-t">Settlement</span>
+        <p class="led-d">Fast, cheap finality on Robinhood Chain — swaps settle in seconds, gas stays pocket change, and the chart never sleeps.</p></div>
+      <div class="led-row rv" style="--d:.12s"><span class="led-no">/ 03</span><span class="led-t">Intelligence</span>
+        <p class="led-d">The smartest contract on any chain is a community that keeps showing up. $ICT is collective intelligence, distilled to a ticker.</p></div>
+      <div class="led-row rv" style="--d:.18s"><span class="led-no">/ 04</span><span class="led-t">Updates</span>
+        <p class="led-d">All the latest — announcements, community news, and what's next — is posted on our official X first: <a href="https://x.com/ICT_Clank" target="_blank" rel="noopener noreferrer" style="color:var(--lime);font-weight:600;text-decoration:none;border-bottom:1px solid rgba(204,255,0,.4)">@ICT_Clank</a>.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 HOW TO BUY ============ -->
+<section class="section" id="buy" style="background:var(--bg-2)">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="sec-no">02</span>
+      <div>
+        <p class="overline">HOW TO BUY</p>
+        <h2>How to buy <em>$ICT</em>.</h2>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="relay-copy">
+        <p class="rv"><strong>Four steps and you're a holder.</strong> Everything routes through the official
+        <a href="https://clank.trade/coin/0x89669c21f0c979939fe7aad0b31d9a269d6264d0" target="_blank" rel="noopener noreferrer" style="color:var(--lime);font-weight:600;text-decoration:none;border-bottom:1px solid rgba(204,255,0,.4)">$ICT page on clank.trade</a> — save it, bookmark it, use nothing else.</p>
+        <ol class="buy-steps">
+          <li class="rv"><span class="bs-no">01</span><div><h4>Get ETH</h4><p>Have ETH available in a compatible wallet.</p></div></li>
+          <li class="rv" style="--d:.06s"><span class="bs-no">02</span><div><h4>Bridge if needed</h4><p>If your ETH is not already on Robinhood Chain, use <a href="https://relay.link/" target="_blank" rel="noopener noreferrer">Relay</a> to bridge it — see section 03 below.</p></div></li>
+          <li class="rv" style="--d:.12s"><span class="bs-no">03</span><div><h4>Open the official $ICT page</h4><p>Use the official <a href="https://clank.trade/coin/0x89669c21f0c979939fe7aad0b31d9a269d6264d0" target="_blank" rel="noopener noreferrer">clank.trade $ICT page</a>.</p></div></li>
+          <li class="rv" style="--d:.18s"><span class="bs-no">04</span><div><h4>Buy $ICT</h4><p>Swap ETH for $ICT on the official page.</p></div></li>
+        </ol>
+        <a class="btn btn-lime rv" style="--d:.22s" href="https://clank.trade/coin/0x89669c21f0c979939fe7aad0b31d9a269d6264d0" target="_blank" rel="noopener noreferrer">BUY $ICT
+          <svg class="ic" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        </a>
+      </div>
+
+      <div class="side-panel rv" style="--d:.1s">
+        <h4>OFFICIAL CONTRACT</h4>
+        <div class="ca-bar">
+          <span class="ca-chip">CA</span>
+          <span class="ca-addr js-ca-full" style="font-size:12px;overflow:hidden;text-overflow:ellipsis">0x…</span>
+        </div>
+        <a class="btn btn-lime" href="https://clank.trade/coin/0x89669c21f0c979939fe7aad0b31d9a269d6264d0" target="_blank" rel="noopener noreferrer">BUY $ICT ON CLANK.TRADE
+          <svg class="ic" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="https://relay.link/" target="_blank" rel="noopener noreferrer">BRIDGE YOUR ETH HERE
+          <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <p class="tip">Always verify the contract address on the official clank.trade page before any transaction. Never trust addresses or links sent in DMs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 BRIDGE ============ -->
+<section class="section" id="bridge">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="sec-no">03</span>
+      <div>
+        <p class="overline">BRIDGE</p>
+        <h2>How to bridge if you don't have ETH on <em>Robinhood Chain</em> yet.</h2>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="relay-copy">
+        <p class="rv">$ICT trades on the <strong>Robinhood Chain</strong>, so your ETH needs to be there too.
+        <a href="https://relay.link/" target="_blank" rel="noopener noreferrer" style="color:var(--lime);font-weight:600;text-decoration:none;border-bottom:1px solid rgba(204,255,0,.4)">relay.link</a>
+        moves it across in one hop — one wallet, one signature, usually settled in seconds.</p>
+        <ol class="relay-steps">
+          <li class="rv"><span>01</span><p><strong>Open Relay</strong> — go to <a href="https://relay.link/" target="_blank" rel="noopener noreferrer">relay.link</a>.</p></li>
+          <li class="rv" style="--d:.05s"><span>02</span><p><strong>Use your wallet</strong> — open the wallet that holds your ETH.</p></li>
+          <li class="rv" style="--d:.1s"><span>03</span><p><strong>Select the route</strong> — bridge your ETH to Robinhood Chain.</p></li>
+          <li class="rv" style="--d:.15s"><span>04</span><p><strong>Confirm</strong> — review the route and confirm the transaction.</p></li>
+          <li class="rv" style="--d:.2s"><span>05</span><p><strong>Return to Clank</strong> — once your ETH is available on Robinhood Chain, use the official <a href="https://clank.trade/coin/0x89669c21f0c979939fe7aad0b31d9a269d6264d0" target="_blank" rel="noopener noreferrer">$ICT page on clank.trade</a> to buy.</p></li>
+        </ol>
+        <div class="trade-cta rv" style="--d:.24s">
+          <a class="btn btn-lime" href="https://relay.link/" target="_blank" rel="noopener noreferrer">BRIDGE YOUR ETH
+            <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="https://clank.trade/coin/0x89669c21f0c979939fe7aad0b31d9a269d6264d0" target="_blank" rel="noopener noreferrer">BUY $ICT
+            <svg class="ic" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="side-panel rv" style="--d:.1s">
+        <h4>GOOD TO KNOW</h4>
+        <p class="route-facts" style="margin-bottom:18px">SUPPORTS 40+ CHAINS · AVG HOP ~15s · FEES OFTEN &lt; $0.01</p>
+        <p class="tip" style="margin-top:0">PS — Relay will never ask for your seed phrase. Nobody legitimate ever will. Guard those 12 words like the last slice of pizza.</p>
+        <a class="btn btn-ghost" href="https://relay.link/" target="_blank" rel="noopener noreferrer">OPEN RELAY.LINK
+          <svg class="ic" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 COMMUNITY ============ -->
+<section class="section" id="community" style="background:var(--bg-2)">
+  <div class="wrap comm-grid">
+    <h2 class="rv">The community is the <em>product</em>.</h2>
+    <div class="comm-right">
+      <!-- MASCOT · meet the mascot -->
+      <div class="nat-card rv" style="--d:.06s">
+        <span class="ph">
+          <img src="mascot-face.png" alt="The $ICT mascot"
+               onerror="this.onerror=function(){var p=this.closest('.nat-card');if(p)p.style.display='none';};this.src='natasha-face.png';">
+        </span>
+        <span class="who">
+          <b class="js-mname">Natasha</b>
+          <span>THE FACE OF $ICT</span><br>
+          <span>MASCOT · HOLDER · BELIEVER</span>
+        </span>
+      </div>
+      <p class="rv" style="--d:.08s">$ICT has no CEO, no treasury, no master plan. It has you, everyone else who clicked buy,
+      and a ticker that never sleeps. That's the whole pitch — and it's enough.</p>
+      <div class="comm-cta rv" style="--d:.14s">
+        <a class="btn btn-lime" href="https://clank.trade/coin/0x89669c21f0c979939fe7aad0b31d9a269d6264d0" target="_blank" rel="noopener noreferrer">BUY $ICT
+          <svg class="ic" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="https://relay.link" target="_blank" rel="noopener noreferrer">RELAY.LINK
+          <svg class="ic" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        </a>
+      </div>
+      <p class="socials-note rv" style="--d:.2s">SOCIALS — WHERE IT ALL HAPPENS</p>
+      <div class="comm-cta rv" style="--d:.24s">
+        <a class="btn btn-ghost" href="https://x.com/ICT_Clank" target="_blank" rel="noopener noreferrer">
+          <svg class="bi" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          X — @ICT_Clank
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 PARTNERS / COMING SOON ============ -->
+<section class="section" id="partners">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="sec-no">05</span>
+      <div>
+        <p class="overline">COMING SOON</p>
+        <h2>The next <em>transmission</em>.</h2>
+      </div>
+    </div>
+    <div class="soon-flex">
+      <div class="soon-text">
+        <p class="soon-big rv">Partners — being revealed soon…</p>
+        <p class="soon-big alt rv" style="--d:.08s">More features will be added soon…</p>
+        <p class="soon-sub rv" style="--d:.16s">STAY TUNED — ANNOUNCEMENTS LAND ON <a href="https://x.com/ICT_Clank" target="_blank" rel="noopener noreferrer">OUR OFFICIAL X</a> FIRST</p>
+      </div>
+      <!-- MASCOT · peeking in on the reveal -->
+      <div class="nat-soon" aria-hidden="true">
+        <div class="nat-frame">
+          <img src="mascot-face.png" alt=""
+               onerror="this.onerror=function(){var p=this.closest('.nat-soon');if(p)p.style.display='none';};this.src='natasha-face.png';">
+          <span class="nat-tag">SOON…</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============ MARQUEE 2 ============ -->
+<div class="marquee lime" aria-hidden="true">
+  <div class="mq-track">
+    <span class="mq-half">BUY $ICT&nbsp;&nbsp;///&nbsp;&nbsp;BRIDGE WITH RELAY&nbsp;&nbsp;///&nbsp;&nbsp;PARTNERS SOON&nbsp;&nbsp;///&nbsp;&nbsp;MORE FEATURES SOON&nbsp;&nbsp;///&nbsp;&nbsp;STAY INTELLIGENT&nbsp;&nbsp;///&nbsp;&nbsp;DYOR&nbsp;&nbsp;///&nbsp;&nbsp;</span>
+    <span class="mq-half">BUY $ICT&nbsp;&nbsp;///&nbsp;&nbsp;BRIDGE WITH RELAY&nbsp;&nbsp;///&nbsp;&nbsp;PARTNERS SOON&nbsp;&nbsp;///&nbsp;&nbsp;MORE FEATURES SOON&nbsp;&nbsp;///&nbsp;&nbsp;STAY INTELLIGENT&nbsp;&nbsp;///&nbsp;&nbsp;DYOR&nbsp;&nbsp;///&nbsp;&nbsp;</span>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-word" aria-hidden="true">$ICT</div>
+    <div class="foot-grid">
+      <div>
+        <h5>INTELLIGENT COMMUNITY TOKEN</h5>
+        <p>A community meme token living on Robinhood Chain, launched on clank.trade, one Relay hop from everywhere. Built by holders, for holders.</p>
+        <!-- MASCOT · footer signature -->
+        <div class="foot-mascot">
+          <span class="orb">
+            <img src="mascot-face.png" alt=""
+                 onerror="this.onerror=function(){var p=this.closest('.foot-mascot');if(p)p.style.display='none';};this.src='natasha-face.png';">
+          </span>
+          <span class="who"><b class="js-mname">Natasha</b><span>MORE THAN A TOKEN — IT'S A MOVEMENT</span></span>
+        </div>
+      </div>
+      <div>
+        <h5>NAVIGATE</h5>
+        <ul>
+          <li><a href="#thesis">01 — THESIS</a></li>
+          <li><a href="#buy">02 — HOW TO BUY $ICT</a></li>
+          <li><a href="#bridge">03 — BRIDGE ETH</a></li>
+          <li><a href="#community">04 — COMMUNITY</a></li>
+          <li><a href="#partners">05 — PARTNERS / SOON</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>SOCIALS</h5>
+        <ul>
+          <li><a href="https://x.com/ICT_Clank" target="_blank" rel="noopener noreferrer">X — @ICT_Clank ↗</a></li>
+        </ul>
+      </div>
+      <div class="foot-meta">
+        <h5>ONCHAIN</h5>
+        <span>CHAIN — <b>ROBINHOOD CHAIN</b></span>
+        <span>TRADE — <b>CLANK.TRADE</b></span>
+        <span>BRIDGE — <b>RELAY.LINK</b></span>
+        <span>MASCOT — <b class="js-mname">Natasha</b></span>
+        <span style="font-size:11px;word-break:break-all;opacity:.6" class="js-ca-full">0x…</span>
+      </div>
+    </div>
+
+    <!-- ============ LEGAL DISCLAIMER + SAFETY ============ -->
+    <div class="disclaimer">
+      <p><b>DISCLAIMER —</b> $ICT (Intelligent Community Token) is an independent community meme token created for
+      entertainment and cultural purposes only. It has no intrinsic value and no expectation of financial return.
+      $ICT is <b>not affiliated with, associated with, endorsed by, or officially connected to Robinhood Markets, Inc.,
+      Robinhood Financial LLC, Robinhood Crypto LLC, relay.link, clank.trade, or any other financial institution,
+      brokerage, exchange, bridge, or brand</b> in any way. Third-party links on this site — including relay.link and
+      clank.trade — are provided <b>solely as a convenience, to help community members find where to bridge and trade</b>.
+      We do not operate, control, or represent any third-party platform. Any similarities in naming are purely
+      coincidental and community-driven. Nothing on this website constitutes financial advice. Cryptocurrency involves
+      risk — always do your own research (DYOR).</p>
+      <p><b>SAFETY —</b> <b>Only connect your wallet after verifying that the website you are on is official.</b>
+      Bookmark the official links and double-check every domain before transacting: this site is informational only
+      and never asks you to connect, sign, or transact here. Verify the contract address on the official
+      clank.trade page, and never trust addresses, links, or offers sent via DMs or social media. If a website,
+      pop-up, or message ever asks for your seed phrase — it is a scam. Always.</p>
+    </div>
+
+    <div class="foot-bottom">
+      <span>© 2026 INTELLIGENT COMMUNITY TOKEN</span>
+      <span>$ICT IS A MEME TOKEN WITH NO INTRINSIC VALUE OR EXPECTATION OF RETURN. NOT FINANCIAL ADVICE. OBVIOUSLY.</span>
+      <a href="#top">BACK TO TOP ↑</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   OFFICIAL $ICT CONTRACT ADDRESS — displayed as read-only text.
+   No clipboard interaction: always verify on the official page.
+   ════════════════════════════════════════════════════════════ */
+const CA = "0x89669c21f0C979939FE7aad0B31d9A269d6264d0";
+
+/* MASCOT NAME — change this one line and every name tag updates. */
+const MASCOT_NAME = "Natasha";
+
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- mascot name fill ---------- */
+document.querySelectorAll('.js-mname').forEach(el => el.textContent = MASCOT_NAME);
+
+/* ---------- contract address (read-only display) ---------- */
+const shortCA = CA.length > 16 ? CA.slice(0,6) + '…' + CA.slice(-4) : CA;
+document.querySelectorAll('.js-ca').forEach(el => el.textContent = shortCA);
+document.querySelectorAll('.js-ca-full').forEach(el => el.textContent = CA);
+
+/* ---------- mobile menu ---------- */
+const menuBtn = document.getElementById('menuBtn');
+const mNav = document.getElementById('mNav');
+menuBtn.addEventListener('click', () => {
+  const open = mNav.classList.toggle('open');
+  menuBtn.querySelector('.ic-menu').style.display = open ? 'none' : '';
+  menuBtn.querySelector('.ic-x').style.display = open ? '' : 'none';
+});
+mNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  mNav.classList.remove('open');
+  menuBtn.querySelector('.ic-menu').style.display = '';
+  menuBtn.querySelector('.ic-x').style.display = 'none';
+}));
+
+/* ---------- scroll reveals ---------- */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+}), {threshold:.12});
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+/* ---------- nav spy ---------- */
+const spy = new IntersectionObserver(es => es.forEach(e => {
+  if(e.isIntersecting){
+    document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
+    const link = document.querySelector(`.nav a[href="#${e.target.id}"]`);
+    if(link) link.classList.add('active');
+  }
+}), {rootMargin:'-35% 0px -60% 0px'});
+['thesis','buy','bridge','community','partners'].forEach(id => {
+  const el = document.getElementById(id);
+  if(el) spy.observe(el);
+});
+
+/* ══════════ HERO — signal field canvas ══════════ */
+const hero = document.getElementById('top');
+const canvas = document.getElementById('field');
+const ctx = canvas.getContext('2d');
+const CHARS = '01<>/*:+·×';
+const CW = 20, CH = 20;
+let cols, rows, W, H, t = 0, heroVisible = true;
+const mouse = {x:-9999, y:-9999};
+
+function sizeCanvas(){
+  const r = hero.getBoundingClientRect();
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  W = r.width; H = r.height;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  cols = Math.ceil(W / CW); rows = Math.ceil(H / CH);
+}
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  ctx.font = '12px "JetBrains Mono", monospace';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  for(let i=0;i<cols;i++){
+    for(let j=0;j<rows;j++){
+      const x = i*CW + CW/2, y = j*CH + CH/2;
+      let v = Math.sin(i*.35 + t) * Math.cos(j*.3 - t*.7) + Math.sin((i+j)*.18 + t*.45);
+      v = (v+2)/4;
+      const inf = Math.max(0, 1 - Math.hypot(x-mouse.x, y-mouse.y)/200);
+      v = Math.min(1, v + inf*.9);
+      if(v < .08) continue;
+      if(inf > .5){
+        ctx.fillStyle = `rgba(204,255,0,${(.25+inf*.55).toFixed(2)})`;
+      }else{
+        ctx.fillStyle = `rgba(168,150,255,${(.04+v*.15).toFixed(2)})`;
+      }
+      ctx.fillText(CHARS[Math.min(CHARS.length-1, Math.floor(v*CHARS.length))], x, y);
+    }
+  }
+}
+hero.addEventListener('mousemove', e => {
+  const r = canvas.getBoundingClientRect();
+  mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+});
+hero.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+new IntersectionObserver(es => heroVisible = es[0].isIntersecting, {threshold:0}).observe(hero);
+
+sizeCanvas();
+if(RM){ draw(); }
+else{ (function loop(){ if(heroVisible){ t += .02; draw(); } requestAnimationFrame(loop); })(); }
+addEventListener('resize', () => { sizeCanvas(); if(RM) draw(); });
+</script>
+</body>
+</html>
